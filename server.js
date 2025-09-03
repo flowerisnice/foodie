@@ -18,7 +18,10 @@ app.use(logger);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors());
+// app.use(cors());
+// const cors = require('cors');
+app.use(cors({ origin: '*' })); // allow all origins (for testing)
+
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +31,12 @@ app.use(express.json());
 
 //middleware for cookies
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+    console.log(req.method, req.url);
+    next();
+});
+
 
 //serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
@@ -61,4 +70,5 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3500, '0.0.0.0', () => console.log("Running on 0.0.0.0:3500"));
